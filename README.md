@@ -30,17 +30,33 @@ Think of it as a **Marvel Cinematic Universe for short dramas**, but open and bu
 
 ---
 
+## Core Features
+
+- **Character Book & World Book**  
+  Users can provide character profiles (traits, goals, backstory) and world settings (history, laws, geography). The system can also output updated versions after evolution.
+
+- **Evolution by Community Voting**  
+  Participants propose and vote on character arcs, major events, or world rule changes. Voting results directly update the books, enabling decentralized collective storytelling.
+
+- **Evolution by AI Generation**  
+  Integrated LLMs generate story fragments, dialogues, or event branches. Users can select, modify, and commit AI-generated content, which then becomes part of the universe history.
+
+- **Traceable History**  
+  Every evolution (voting or AI) is logged. Users can browse or roll back to any previous version of a character or world.
+
+---
+
 ## The Core Metaphor: Celestial Bodies
 
 We model every narrative element as a celestial body. This makes complex relationships visual and intuitive.
 
-| Celestial Body | Narrative Role                        | Example                                |
+| Celestial Body | Narrative Role | Example |
 | -------------- | ------------------------------------- | -------------------------------------- |
-| **Star**       | Core protagonist / central figure     | The CEO in a business drama            |
-| **Planet**     | Recurring supporting character        | The loyal assistant, the rival         |
-| **Comet**      | Guest character / temporary influence | A mysterious stranger passing through  |
-| **Meteor**     | One‑time event / noise                | A viral rumor, a sudden accident       |
-| **Black Hole** | High‑risk point / unknown             | A secret that could destroy everything |
+| **Star** | Core protagonist / central figure | The CEO in a business drama |
+| **Planet** | Recurring supporting character | The loyal assistant, the rival |
+| **Comet** | Guest character / temporary influence | A mysterious stranger passing through |
+| **Meteor** | One‑time event / noise | A viral rumor, a sudden accident |
+| **Black Hole** | High‑risk point / unknown | A secret that could destroy everything |
 
 **Gravitational fields** represent external forces (market trends, social pressure, antagonist actions) that pull on characters’ orbits.
 
@@ -57,6 +73,28 @@ CronusShortVerse is built on top of **CronusCycle** – the open‑source decisi
 Thus, CronusShortVerse is not just a concept – it is a **runnable, extensible tool** for creators.
 
 ---
+
+## Roadmap
+
+We are building more than a document – we are building a **usable platform**. Here is what’s planned:
+
+- **Q3 2026 – Web Prototype**  
+  A simple web interface where you can:
+  - Create or import Character Books and World Books
+  - Visualize your universe with the Galaxy Engine (basic 2D star map)
+  - Submit evolution proposals and vote on community ideas
+
+- **Q4 2026 – AI Integration**  
+  One-click AI generation of story branches based on your books. Users can commit AI suggestions directly.
+
+- **Q1 2027 – Mobile App (iOS & Android)**  
+  A companion app for browsing universes, receiving notifications on voting results, and quick story generation on the go.
+
+- **Beyond** – API for developers, custom visualization themes, and decentralized governance experiments.
+
+> **Note**: Everything is open source. If you are a developer, you can help accelerate this roadmap. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+--- 
 
 ## Get Involved
 
