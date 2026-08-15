@@ -176,9 +176,10 @@ async function loadUniverseDetail(id) {
         <p class="text-gray-400 mt-2">${escapeHtml(u.description || '')}</p>
       </div>
 
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-bold">角色 (${characters.length})</h3>
+      <div class="flex flex-wrap gap-3 mb-6">
         <button onclick="requireAuth(() => showPage('create-character', {universeId: ${id}}))" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm">+ 添加角色</button>
+        <button onclick="forkUniverse(${id}, '${escapeHtml(u.name)}')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm">🔀 复制宇宙</button>
+        <button onclick="exportChronicle(${id})" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-sm">📄 导出编年史</button>
       </div>
 
       ${characters.length === 0 ? '<div class="text-center text-gray-400 py-8">还没有角色，添加第一个吧！</div>' : ''}
@@ -276,6 +277,47 @@ document.getElementById('create-character-form').addEventListener('submit', asyn
     showToast(err.message, 'error');
   }
 });
+
+// ========== Fork 宇宙 ==========
+async function forkUniverse(id, originalName) {
+  const newName = prompt(`输入分支宇宙名称：`, `${originalName}（分支）`);
+  if (!newName) return;
+
+  try {
+    showToast('正在复制宇宙...');
+    const data = await api(`/universes/${id}/fork`, {
+      method: 'POST',
+      body: JSON.stringify({ name: newName })
+    });
+    showToast(`宇宙已复制！${data.stats.characters_copied} 个角色，${data.stats.relationships_copied} 条关系`);
+    showPage('universe-detail', { id: data.universe.id });
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+// ========== 导出编年史 ==========
+async function exportChronicle(id) {
+  try {
+    showToast('正在生成编年史...');
+    const data = await api(`/universes/${id}/export`);
+
+    // 创建下载
+    const blob = new Blob([data.content], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${data.universe}-编年史.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showToast(`编年史已导出！${data.stats.characters} 个角色，${data.stats.relationships} 条关系`);
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
 
 // ========== 工具函数 ==========
 function escapeHtml(text) {
