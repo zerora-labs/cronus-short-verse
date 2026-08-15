@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CronusShortVerse - 短剧宇宙</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .fade-in { animation: fadeIn 0.3s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .celestial-star { color: #fbbf24; }
+    .celestial-planet { color: #60a5fa; }
+    .celestial-comet { color: #a78bfa; }
+    .celestial-meteor { color: #f87171; }
+    .celestial-black_hole { color: #1f2937; }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+
+  <!-- 导航栏 -->
+  <nav class="bg-gray-900 border-b border-gray-800 px-6 py-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold text-purple-400 cursor-pointer" onclick="showPage('home')">🌌 CronusShortVerse</h1>
+      <div id="nav-auth" class="flex gap-4">
+        <button onclick="showPage('login')" class="px-4 py-2 text-sm text-gray-300 hover:text-white">登录</button>
+        <button onclick="showPage('register')" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-700 rounded-lg">注册</button>
+      </div>
+      <div id="nav-user" class="hidden flex gap-4 items-center">
+        <span id="nav-username" class="text-sm text-gray-300"></span>
+        <button onclick="logout()" class="px-4 py-2 text-sm text-gray-300 hover:text-white">退出</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面容器 -->
+  <main class="max-w-6xl mx-auto px-6 py-8">
+
+    <!-- 首页 -->
+    <div id="page-home" class="fade-in">
+      <div class="text-center py-16">
+        <h2 class="text-4xl font-bold mb-4">短剧宇宙工厂</h2>
+        <p class="text-gray-400 text-lg mb-8">用天体物理学的方式构建短剧世界</p>
+        <div class="flex justify-center gap-4">
+          <button onclick="showPage('universes')" class="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium">探索宇宙</button>
+          <button onclick="requireAuth(() => showPage('create-universe'))" class="px-6 py-3 border border-purple-500 hover:bg-purple-500/20 rounded-lg font-medium">创建宇宙</button>
+        </div>
+      </div>
+
+      <!-- 天体类型说明 -->
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-12">
+        <div class="bg-gray-900 rounded-lg p-4 text-center">
+          <div class="text-3xl mb-2">⭐</div>
+          <div class="font-medium celestial-star">Star 恒星</div>
+          <div class="text-sm text-gray-400">核心主角</div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-4 text-center">
+          <div class="text-3xl mb-2">🪐</div>
+          <div class="font-medium celestial-planet">Planet 行星</div>
+          <div class="text-sm text-gray-400">常驻配角</div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-4 text-center">
+          <div class="text-3xl mb-2">☄️</div>
+          <div class="font-medium celestial-comet">Comet 彗星</div>
+          <div class="text-sm text-gray-400">客串角色</div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-4 text-center">
+          <div class="text-3xl mb-2">🌠</div>
+          <div class="font-medium celestial-meteor">Meteor 流星</div>
+          <div class="text-sm text-gray-400">一次性事件</div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-4 text-center">
+          <div class="text-3xl mb-2">🕳️</div>
+          <div class="font-medium text-gray-300">Black Hole 黑洞</div>
+          <div class="text-sm text-gray-400">高风险点</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 登录页 -->
+    <div id="page-login" class="hidden fade-in max-w-md mx-auto">
+      <h2 class="text-2xl font-bold mb-6">登录</h2>
+      <form id="login-form" class="space-y-4">
+        <input type="email" id="login-email" placeholder="邮箱" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none">
+        <input type="password" id="login-password" placeholder="密码" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none">
+        <button type="submit" class="w-full py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium">登录</button>
+        <p class="text-center text-gray-400">没有账号？<a onclick="showPage('register')" class="text-purple-400 cursor-pointer hover:underline">注册</a></p>
+      </form>
+    </div>
+
+    <!-- 注册页 -->
+    <div id="page-register" class="hidden fade-in max-w-md mx-auto">
+      <h2 class="text-2xl font-bold mb-6">注册</h2>
+      <form id="register-form" class="space-y-4">
+        <input type="text" id="register-username" placeholder="用户名" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none">
+        <input type="email" id="register-email" placeholder="邮箱" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none">
+        <input type="password" id="register-password" placeholder="密码" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none">
+        <button type="submit" class="w-full py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium">注册</button>
+        <p class="text-center text-gray-400">已有账号？<a onclick="showPage('login')" class="text-purple-400 cursor-pointer hover:underline">登录</a></p>
+      </form>
+    </div>
+
+    <!-- 宇宙列表 -->
+    <div id="page-universes" class="hidden fade-in">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">所有宇宙</h2>
+        <button onclick="requireAuth(() => showPage('create-universe'))" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm">+ 创建宇宙</button>
+      </div>
+      <div id="universe-list" class="grid gap-4"></div>
+    </div>
+
+    <!-- 创建宇宙 -->
+    <div id="page-create-universe" class="hidden fade-in max-w-2xl mx-auto">
+      <h2 class="text-2xl font-bold mb-6">创建新宇宙</h2>
+      <form id="create-universe-form" class="space-y-4">
+        <input type="text" id="universe-name" placeholder="宇宙名称" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none">
+        <textarea id="universe-desc" placeholder="宇宙描述" rows="3" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none"></textarea>
+        <div class="flex gap-4">
+          <button type="submit" class="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium">创建</button>
+          <button type="button" onclick="showPage('universes')" class="px-6 py-3 border border-gray-700 hover:bg-gray-800 rounded-lg">取消</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 宇宙详情 -->
+    <div id="page-universe-detail" class="hidden fade-in">
+      <div id="universe-detail-content"></div>
+      <!-- Galaxy Engine 画布 -->
+      <div id="galaxy-container" class="hidden mt-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold">🌌 Galaxy Engine 星图</h3>
+          <div class="flex gap-2 text-xs text-gray-500">
+            <span>🖱️ 拖拽平移</span>
+            <span>🔄 滚轮缩放</span>
+            <span>👆 点击节点查看详情</span>
+          </div>
+        </div>
+        <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden" style="height: 500px;">
+          <canvas id="galaxy-canvas" class="w-full h-full"></canvas>
+        </div>
+        <!-- 节点详情面板 -->
+        <div id="node-detail" class="hidden mt-4 bg-gray-900 border border-gray-800 rounded-lg p-4"></div>
+      </div>
+    </div>
+
+    <!-- 创建角色 -->
+    <div id="page-create-character" class="hidden fade-in max-w-2xl mx-auto">
+      <h2 class="text-2xl font-bold mb-6">添加角色</h2>
+      <form id="create-character-form" class="space-y-4">
+        <input type="hidden" id="char-universe-id">
+        <input type="text" id="char-name" placeholder="角色名称" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none">
+        <select id="char-type" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none">
+          <option value="star">⭐ Star 恒星（核心主角）</option>
+          <option value="planet">🪐 Planet 行星（常驻配角）</option>
+          <option value="comet">☄️ Comet 彗星（客串角色）</option>
+          <option value="meteor">🌠 Meteor 流星（一次性事件）</option>
+          <option value="black_hole">🕳️ Black Hole 黑洞（高风险点）</option>
+        </select>
+        <textarea id="char-desc" placeholder="角色描述" rows="3" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none"></textarea>
+        <textarea id="char-backstory" placeholder="背景故事" rows="3" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none"></textarea>
+        <div class="flex gap-4">
+          <button type="submit" class="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium">创建角色</button>
+          <button type="button" onclick="history.back()" class="px-6 py-3 border border-gray-700 hover:bg-gray-800 rounded-lg">取消</button>
+        </div>
+      </form>
+    </div>
+
+  </main>
+
+  <!-- Toast 通知 -->
+  <div id="toast" class="fixed bottom-4 right-4 bg-gray-800 border border-gray-700 px-4 py-3 rounded-lg shadow-lg hidden"></div>
+
+  <script src="galaxy.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
