@@ -1,15 +1,9 @@
-<div align="center">
+# CronusShortVerse
 
-![CronusShortVerse](https://img.shields.io/badge/CronusShortVerse-叙事引力-purple?style=for-the-badge)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
+[![zh-cn](https://img.shields.io/badge/lang-zh--cn-green.svg)](README.zh-CN.md)
 
 **叙事引力驱动的短剧宇宙**
-
-[![English](https://img.shields.io/badge/🌐_English-README-green?style=flat-square&logo=google translate&logoColor=white)](README.md)
-[![中文版](https://img.shields.io/badge/🌏_中文版-README-blue?style=flat-square&logo=google translate&logoColor=white)](README.zh-CN.md)
-
----
-
-</div>
 
 CronusShortVerse 是一个开放、由社区驱动的框架，用于构建相互连接的短剧宇宙。它借助天体物理隐喻（恒星、行星、彗星、流星、黑洞）来建模角色、关系和剧情动态，帮助创作者设计快节奏、强戏剧性的故事，牢牢抓住观众注意力。
 

@@ -1,15 +1,9 @@
-<div align="center">
+# CronusShortVerse
 
-![CronusShortVerse](https://img.shields.io/badge/CronusShortVerse-Narrative_Gravity-purple?style=for-the-badge)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
+[![zh-cn](https://img.shields.io/badge/lang-zh--cn-green.svg)](README.zh-CN.md)
 
 **A Short Drama Universe Powered by Narrative Gravity**
-
-[![中文版](https://img.shields.io/badge/🌏_中文版-README-blue?style=flat-square&logo=google translate&logoColor=white)](README.zh-CN.md)
-[![English](https://img.shields.io/badge/🌐_English-README-green?style=flat-square&logo=google translate&logoColor=white)](README.md)
-
----
-
-</div>
 
 CronusShortVerse is an open, community-driven framework for building connected short drama universes. It uses astrophysical metaphors (stars, planets, comets, meteors, black holes) to model characters, relationships, and plot dynamics, enabling creators to design fast‑paced, high‑drama stories that keep viewers engaged.
 
