@@ -11,8 +11,6 @@
 
 </div>
 
-**A Short Drama Universe Powered by Narrative Gravity**
-
 CronusShortVerse is an open, community-driven framework for building connected short drama universes. It uses astrophysical metaphors (stars, planets, comets, meteors, black holes) to model characters, relationships, and plot dynamics, enabling creators to design fast‑paced, high‑drama stories that keep viewers engaged.
 
 ---
