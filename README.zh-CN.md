@@ -1,4 +1,15 @@
-# CronusShortVerse
+<div align="center">
+
+![CronusShortVerse](https://img.shields.io/badge/CronusShortVerse-叙事引力-purple?style=for-the-badge)
+
+**叙事引力驱动的短剧宇宙**
+
+[![English](https://img.shields.io/badge/🌐_English-README-green?style=flat-square&logo=google translate&logoColor=white)](README.md)
+[![中文版](https://img.shields.io/badge/🌏_中文版-README-blue?style=flat-square&logo=google translate&logoColor=white)](README.zh-CN.md)
+
+---
+
+</div>
 
 **叙事引力驱动的短剧宇宙**
 
@@ -93,6 +104,72 @@ CronusShortVerse 构建在 **CronusCycle** 之上。CronusCycle 是一个开源�
 - **更远的未来** – 开放 API、自定义可视化主题、去中心化治理实验。
 
 > **注意**：一切开源。如果你是开发者，欢迎帮助加速推进路线图。详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+---
+
+## 开发状态
+
+> 最后更新：2026-08-17
+
+### 已完成
+
+| 模块 | 后端 API | 前端页面 | 状态 |
+|------|:--------:|:--------:|------|
+| 用户认证（注册/登录/信息） | ✅ | ✅ | 完成 |
+| 宇宙 CRUD + 复制 + 导出编年史 | ✅ | ✅ | 完成 |
+| 角色 CRUD（含天体类型） | ✅ | ✅ | 完成 |
+| Galaxy Engine（交互式 Canvas 星图） | ✅ | ✅ | 完成 |
+
+### 进行中 / 未开始
+
+| 模块 | 后端 API | 前端页面 | 状态 |
+|------|:--------:|:--------:|------|
+| 引力关系管理 | ❌ | ❌ | 表已建，无路由 |
+| 提案 + 投票系统 | ❌ | ❌ | 表已建，无路由 |
+| 弧与剧集管理 | ❌ | ❌ | 表已建，无路由 |
+| 事件追踪（信号/噪声） | ❌ | ❌ | 表已建，无路由 |
+| 变更历史与回滚 | ❌ | ❌ | 表已建，无路由 |
+| 角色详情页（完整 Character Book） | — | ❌ | — |
+| 提案中心页面 | — | ❌ | — |
+| AI 故事生成 | ❌ | ❌ | 未开始 |
+
+### 技术栈
+
+- **后端**：Express + SQLite（better-sqlite3）+ JWT
+- **前端**：原生 JS + TailwindCSS + Canvas（Galaxy Engine）
+- **数据库**：SQLite（`db.js` 中定义了 14 张表）
+
+---
+
+## TODO
+
+### Phase 1 — MVP 补全（2026 Q3）
+
+**后端**
+- [ ] 引力关系 CRUD API（`/api/universes/:uid/relationships`）
+- [ ] 提案 CRUD + 投票 API（`/api/universes/:uid/proposals` + `/api/proposals/:id/vote`）
+- [ ] 弧与剧集管理 API
+- [ ] 事件管理 API（信号/噪声区分）
+- [ ] 变更历史 API（`/api/history`）
+- [ ] Galaxy 数据 API（确认 `/api/universes/:uid/galaxy` 是否已整合）
+
+**前端**
+- [ ] 提案中心页面（创建提案 + 投票面板）
+- [ ] 角色详情页（Character Book：属性、关系、演化时间线）
+- [ ] 引力关系管理 UI（创建/编辑角色间关系）
+
+### Phase 2 — 核心功能增强
+
+- [ ] Galaxy Engine 动态轨道动画（当前为静态平衡态布局）
+- [ ] 信号/噪声事件可视化
+- [ ] 历史版本回滚 UI
+- [ ] 通知系统
+
+### Phase 3 — AI 集成（2026 Q4）
+
+- [ ] AI 故事分支生成（OpenAI / Anthropic API）
+- [ ] AI 会话管理 + 提交为提案
+- [ ] 逻辑审计（角色一致性检查）
 
 ---
 

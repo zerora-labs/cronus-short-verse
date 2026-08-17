@@ -1,4 +1,15 @@
-# CronusShortVerse
+<div align="center">
+
+![CronusShortVerse](https://img.shields.io/badge/CronusShortVerse-Narrative_Gravity-purple?style=for-the-badge)
+
+**A Short Drama Universe Powered by Narrative Gravity**
+
+[![中文版](https://img.shields.io/badge/🌏_中文版-README-blue?style=flat-square&logo=google translate&logoColor=white)](README.zh-CN.md)
+[![English](https://img.shields.io/badge/🌐_English-README-green?style=flat-square&logo=google translate&logoColor=white)](README.md)
+
+---
+
+</div>
 
 **A Short Drama Universe Powered by Narrative Gravity**
 
@@ -94,7 +105,73 @@ We are building more than a document – we are building a **usable platform**. 
 
 > **Note**: Everything is open source. If you are a developer, you can help accelerate this roadmap. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
---- 
+---
+
+## Development Status
+
+> Last updated: 2026-08-17
+
+### Completed
+
+| Module | Backend API | Frontend Page | Status |
+|--------|:-----------:|:-------------:|--------|
+| User Auth (register / login / profile) | ✅ | ✅ | Done |
+| Universe CRUD + fork + export chronicle | ✅ | ✅ | Done |
+| Character CRUD (with celestial type) | ✅ | ✅ | Done |
+| Galaxy Engine (interactive Canvas star map) | ✅ | ✅ | Done |
+
+### In Progress / Not Started
+
+| Module | Backend API | Frontend Page | Status |
+|--------|:-----------:|:-------------:|--------|
+| Relationship management (gravitational ties) | ❌ | ❌ | DB table exists, no routes |
+| Proposal + voting system | ❌ | ❌ | DB tables exist, no routes |
+| Arc & episode management | ❌ | ❌ | DB tables exist, no routes |
+| Event tracking (signal / noise) | ❌ | ❌ | DB table exists, no routes |
+| Change history & rollback | ❌ | ❌ | DB table exists, no routes |
+| Character detail page (full Character Book) | — | ❌ | — |
+| Proposal center page | — | ❌ | — |
+| AI story generation | ❌ | ❌ | Not started |
+
+### Tech Stack
+
+- **Backend**: Express + SQLite (better-sqlite3) + JWT
+- **Frontend**: Vanilla JS + TailwindCSS + Canvas (Galaxy Engine)
+- **Database**: SQLite (14 tables defined in `db.js`)
+
+---
+
+## TODO
+
+### Phase 1 — MVP Completion (Q3 2026)
+
+**Backend**
+- [ ] Relationship CRUD API (`/api/universes/:uid/relationships`)
+- [ ] Proposal CRUD + voting API (`/api/universes/:uid/proposals` + `/api/proposals/:id/vote`)
+- [ ] Arc & episode management API
+- [ ] Event management API (signal vs noise)
+- [ ] Change history API (`/api/history`)
+- [ ] Galaxy data API (verify `/api/universes/:uid/galaxy` integration)
+
+**Frontend**
+- [ ] Proposal center page (create proposal + voting panel)
+- [ ] Character detail page (Character Book: traits, relationships, evolution timeline)
+- [ ] Relationship management UI (create / edit gravitational ties)
+
+### Phase 2 — Core Feature Enhancement
+
+- [ ] Galaxy Engine animated orbits (currently static equilibrium layout)
+- [ ] Signal / noise event visualization
+- [ ] Historical version rollback UI
+- [ ] Notification system
+
+### Phase 3 — AI Integration (Q4 2026)
+
+- [ ] AI story branch generation (OpenAI / Anthropic API)
+- [ ] AI session management + submit as proposal
+- [ ] Logic audit (character consistency checking)
+
+---
 
 ## Get Involved
 
