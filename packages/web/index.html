@@ -165,6 +165,41 @@
       </form>
     </div>
 
+    <!-- 提案中心 -->
+    <div id="page-proposals" class="hidden fade-in">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">提案中心</h2>
+        <button onclick="requireAuth(() => showPage('create-proposal'))" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm">+ 创建提案</button>
+      </div>
+      <div id="proposal-list" class="space-y-4"></div>
+    </div>
+
+    <!-- 创建提案 -->
+    <div id="page-create-proposal" class="hidden fade-in max-w-2xl mx-auto">
+      <h2 class="text-2xl font-bold mb-6">创建提案</h2>
+      <form id="create-proposal-form" class="space-y-4">
+        <input type="hidden" id="proposal-universe-id">
+        <input type="text" id="proposal-title" placeholder="提案标题" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none">
+        <textarea id="proposal-desc" placeholder="提案描述" rows="3" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none"></textarea>
+        <select id="proposal-target-type" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none">
+          <option value="character">角色</option>
+          <option value="universe">宇宙</option>
+          <option value="relationship">关系</option>
+        </select>
+        <input type="number" id="proposal-target-id" placeholder="目标 ID" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none">
+        <textarea id="proposal-changes" placeholder='{"name": "新名字", "mass": 5}' rows="4" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none font-mono text-sm"></textarea>
+        <div class="flex gap-4">
+          <button type="submit" class="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium">提交提案</button>
+          <button type="button" onclick="history.back()" class="px-6 py-3 border border-gray-700 hover:bg-gray-800 rounded-lg">取消</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 角色详情 -->
+    <div id="page-character-detail" class="hidden fade-in">
+      <div id="character-detail-content"></div>
+    </div>
+
   </main>
 
   <!-- Toast 通知 -->

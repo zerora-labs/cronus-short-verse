@@ -412,6 +412,24 @@ class GalaxyEngine {
       ctx.restore();
     }
 
+    // 演化标记（提案通过后）
+    if (node.has_evolution) {
+      const pulse = Math.sin(this.time * 2 + node.pulsePhase) * 0.3 + 0.7;
+      const mx = drawX + r * 0.7;
+      const my = drawY - r * 0.7;
+      ctx.globalAlpha = pulse;
+      ctx.fillStyle = '#fbbf24';
+      ctx.beginPath();
+      ctx.arc(mx, my, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#080c14';
+      ctx.font = 'bold 7px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('E', mx, my);
+      ctx.globalAlpha = 1;
+    }
+
     // 标签
     ctx.font = `${isSelected ? 'bold ' : ''}11px Inter, sans-serif`;
     ctx.textAlign = 'center';
@@ -433,6 +451,7 @@ class GalaxyEngine {
       { label: 'Comet 彗星', color: '#a78bfa' },
       { label: 'Meteor 流星', color: '#f87171' },
       { label: 'Black Hole 黑洞', color: '#6b7280' },
+      { label: 'E 已演化', color: '#fbbf24', dot: true },
     ];
 
     const startX = 16, startY = h - 110, lineH = 18;
@@ -449,9 +468,23 @@ class GalaxyEngine {
     items.forEach((item, i) => {
       const y = startY + i * lineH;
       ctx.fillStyle = item.color;
-      ctx.beginPath();
-      ctx.arc(startX + 6, y, 4, 0, Math.PI * 2);
-      ctx.fill();
+      if (item.dot) {
+        ctx.beginPath();
+        ctx.arc(startX + 6, y, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#080c14';
+        ctx.font = 'bold 7px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('E', startX + 6, y);
+        ctx.font = '10px Inter, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+      } else {
+        ctx.beginPath();
+        ctx.arc(startX + 6, y, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
       ctx.fillStyle = '#9ca3af';
       ctx.fillText(item.label, startX + 16, y);
     });
