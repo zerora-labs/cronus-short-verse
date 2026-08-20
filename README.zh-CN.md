@@ -101,7 +101,7 @@ CronusShortVerse 构建在 **CronusCycle** 之上。CronusCycle 是一个开源�
 
 ## 开发状态
 
-> 最后更新：2026-08-17
+> 最后更新：2026-08-20
 
 ### 已完成
 

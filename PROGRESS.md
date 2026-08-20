@@ -1,50 +1,84 @@
 # CronusShortVerse 开发进度
 
-> 最后更新：2026-08-15
+> 最后更新：2026-08-20
 
-## 当前状态
+## 当前状态：Phase 1 MVP 基本完成
 
-### Phase 1: MVP（最小可用版本）
+### 完成清单
 
-| 功能 | 后端 API | 前端页面 | 状态 |
-|------|---------|---------|------|
-| 用户注册/登录 | ✅ 完成 | ⏳ 待实现 | 后端 OK |
-| 宇宙 CRUD | ✅ 完成 | ⏳ 待实现 | 后端 OK |
-| 角色 CRUD（含天体类型） | ✅ 完成 | ⏳ 待实现 | 后端 OK |
-| 基础 Galaxy Engine | ❌ | ⏳ 待实现 | — |
-| 简单提案 + 投票 | ❌ | ⏳ 待实现 | — |
+| 功能 | 后端 API | 前端页面 | 完成日期 | 备注 |
+|------|:--------:|:--------:|:--------:|------|
+| 用户注册/登录 | ✅ | ✅ | 2026-08-15 | JWT 认证 |
+| 宇宙 CRUD | ✅ | ✅ | 2026-08-15 | 含复制(fork)、导出编年史 |
+| 角色 CRUD（含天体类型） | ✅ | ✅ | 2026-08-15 | 5 种天体类型 |
+| Galaxy Engine 星图 | ✅ | ✅ | 2026-08-15 | Canvas 交互式星图，拖拽/缩放 |
+| 引力关系管理 | ✅ | ✅ | 2026-08-20 | 4 种关系类型 |
+| 提案 + 投票 | ✅ | ✅ | 2026-08-20 | 简单计数投票，多数决自动通过 |
+| 弧与剧集管理 | ✅ | ❌ | 2026-08-20 | 后端 API 完成，无前端页面 |
+| 事件追踪（信号/噪声） | ✅ | ❌ | 2026-08-20 | 后端 API 完成，无前端页面 |
+| 变更历史 | ✅ | ❌ | 2026-08-20 | 后端 API 完成，无前端页面 |
+| 角色详情页 | — | ✅ | 2026-08-20 | Character Book 完整视图 |
+| 提案中心页面 | — | ✅ | 2026-08-20 | 创建提案 + 投票面板 |
 
-### 已完成的文件
+### 待完成（Phase 1 收尾）
+
+- [ ] Galaxy 星图展示提案演化标记（角色被提案修改后显示标记）
+- [ ] 弧/剧集管理前端页面
+- [ ] 事件管理前端页面
+- [ ] 变更历史前端页面
+- [ ] 提交推送本次变更（4 修改 + 4 新文件）
+
+### 数据库状态
+
+`db.js` 定义了 **14 张表**（全部已创建）：
+
+```
+users, universes, characters, relationships, arcs, episodes,
+proposals, votes, character_episodes, events, event_characters,
+ai_sessions, history, notifications
+```
+
+> 注意：proposals 表已新增 `universe_id` 字段（2026-08-20），旧数据库需重建。
+
+### 项目文件结构
 
 ```
 packages/server/
-├── package.json          # 依赖配置
-├── data/                 # SQLite 数据库（自动创建）
+├── package.json
+├── data/                        # SQLite 数据库（自动创建）
 └── src/
-    ├── index.js          # Express 服务器入口
-    ├── db.js             # 数据库初始化（SQLite + 14 张表）
+    ├── index.js                 # Express 入口，注册所有路由
+    ├── db.js                    # 数据库初始化（14 张表）
     ├── middleware/
-    │   └── auth.js       # JWT 认证中间件
+    │   └── auth.js              # JWT 认证中间件
     └── routes/
-        ├── auth.js       # 用户注册/登录/信息
-        ├── universes.js  # 宇宙 CRUD
-        └── characters.js # 角色 CRUD
+        ├── auth.js              # 用户注册/登录/信息
+        ├── universes.js         # 宇宙 CRUD + fork + export
+        ├── characters.js        # 角色 CRUD + Galaxy 数据 + 关系
+        ├── proposals.js         # 提案 CRUD + 投票 + 自动通过
+        ├── arcs.js              # 弧 + 剧集 CRUD
+        ├── events.js            # 事件管理 + 角色关联
+        └── history.js           # 变更历史查询
+
+packages/web/
+├── index.html                   # SPA 入口，所有页面 div
+├── app.js                       # 前端逻辑（路由、API 调用）
+└── galaxy.js                    # Galaxy Engine Canvas 渲染
 ```
-
-### 技术栈（当前）
-
-- **后端**：Express + SQLite（better-sqlite3）+ JWT
-- **数据库**：SQLite（本地文件，无需安装）
-- **认证**：JWT token
 
 ### 启动方式
 
 ```bash
+# 后端
 cd packages/server
 npm install
-npm start
-# 服务器运行在 http://localhost:3001
+npm run dev          # http://localhost:3001
+
+# 前端（直接浏览器打开）
+open packages/web/index.html
 ```
+
+> 前端 API_BASE 硬编码为 http://localhost:3001/api，后端必须先启动。
 
 ### API 测试
 
@@ -62,19 +96,44 @@ curl -X POST http://localhost:3001/api/auth/login \
 
 ---
 
-## 下一步计划
+## 开发日志
 
-### 前端 Web 界面（当前任务）
+### 2026-08-20
 
-1. 首页 — 平台介绍、热门宇宙
-2. 宇宙列表 — 浏览所有宇宙
-3. 宇宙详情 — 角色列表 + Galaxy 星图
-4. 角色详情 — Character Book
-5. 用户注册/登录页面
+1. **README 更新**：新增「开发状态」「TODO」章节，中英双语同步，语言切换 badge 对齐 cronus-cycle 风格
+2. **后端补全**：
+   - `db.js` 新增 6 张缺失表（character_episodes, events, event_characters, ai_sessions, history, notifications）
+   - 新增 `proposals.js`：提案 CRUD + 投票 + 多数决自动通过 + 变更应用
+   - 新增 `arcs.js`：弧 + 剧集 CRUD
+   - 新增 `events.js`：事件管理 + 角色关联
+   - 新增 `history.js`：变更历史查询（支持筛选）
+   - `proposals` 表增加 `universe_id` 字段，修复提案列表查询逻辑
+3. **前端补全**：
+   - 提案中心页面（列表 + 创建 + 投票）
+   - 角色详情页（Character Book：属性、目标、引力关系）
+   - 宇宙详情改进：角色名可点击跳转详情，新增提案中心入口
+4. **Bug 修复**：提案列表查询通过 target_id 子匹配有漏洞，改为直接用 universe_id
 
-### 后端待实现
+---
 
-1. 关系管理 API（引力关系）
-2. 提案 + 投票 API
-3. 剧集管理 API
-4. Galaxy Engine 数据 API
+## 下一步（Phase 2）
+
+### 核心功能增强
+- [ ] Galaxy Engine 动态轨道动画（当前为静态平衡态）
+- [ ] 信号/噪声事件可视化
+- [ ] 历史版本回滚 UI
+- [ ] 通知系统
+
+### Phase 3 — AI 集成（Q4 2026）
+- [ ] AI 故事分支生成（OpenAI / Anthropic API）
+- [ ] AI 会话管理 + 提交为提案
+- [ ] 逻辑审计（角色一致性检查）
+
+---
+
+## 技术栈
+
+- **后端**：Express + SQLite（better-sqlite3）+ JWT
+- **前端**：原生 JS + TailwindCSS（CDN）+ Canvas（Galaxy Engine）
+- **数据库**：SQLite（本地文件，WAL 模式）
+- **认证**：JWT token

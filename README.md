@@ -101,7 +101,7 @@ We are building more than a document – we are building a **usable platform**. 
 
 ## Development Status
 
-> Last updated: 2026-08-17
+> Last updated: 2026-08-20
 
 ### Completed
 
