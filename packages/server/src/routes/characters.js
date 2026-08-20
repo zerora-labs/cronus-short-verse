@@ -158,18 +158,22 @@ router.delete('/:id', authMiddleware, (req, res) => {
 // 获取宇宙的 Galaxy 数据（节点 + 边）
 router.get('/galaxy/:universeId', (req, res) => {
   try {
-    // 获取所有角色作为节点
+    // 获取所有角色作为节点，标记是否有已通过的提案
     const nodes = db.prepare(`
-      SELECT id, name, celestial_type, mass, description,
-        CASE celestial_type
+      SELECT c.id, c.name, c.celestial_type, c.mass, c.description,
+        CASE c.celestial_type
           WHEN 'star' THEN '#fbbf24'
           WHEN 'planet' THEN '#60a5fa'
           WHEN 'comet' THEN '#a78bfa'
           WHEN 'meteor' THEN '#f87171'
           WHEN 'black_hole' THEN '#6b7280'
-        END as color
-      FROM characters
-      WHERE universe_id = ?
+        END as color,
+        EXISTS(
+          SELECT 1 FROM proposals p
+          WHERE p.target_type = 'character' AND p.target_id = c.id AND p.status = 'approved'
+        ) as has_evolution
+      FROM characters c
+      WHERE c.universe_id = ?
     `).all(req.params.universeId);
 
     // 获取所有关系作为边

@@ -102,6 +102,7 @@ db.exec(`
     title TEXT NOT NULL,
     description TEXT,
     proposer_id INTEGER NOT NULL,
+    universe_id INTEGER NOT NULL,
     target_type TEXT NOT NULL CHECK(target_type IN ('character', 'universe', 'relationship')),
     target_id INTEGER NOT NULL,
     proposed_changes TEXT,  -- JSON
@@ -109,7 +110,8 @@ db.exec(`
     voting_end_at DATETIME,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (proposer_id) REFERENCES users(id)
+    FOREIGN KEY (proposer_id) REFERENCES users(id),
+    FOREIGN KEY (universe_id) REFERENCES universes(id) ON DELETE CASCADE
   );
 
   -- 投票表
@@ -122,6 +124,82 @@ db.exec(`
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (proposal_id) REFERENCES proposals(id) ON DELETE CASCADE,
     FOREIGN KEY (voter_id) REFERENCES users(id)
+  );
+
+  -- 角色出场表
+  CREATE TABLE IF NOT EXISTS character_episodes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    character_id INTEGER NOT NULL,
+    episode_id INTEGER NOT NULL,
+    role TEXT DEFAULT 'supporting' CHECK(role IN ('protagonist', 'supporting', 'guest')),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (character_id) REFERENCES characters(id) ON DELETE CASCADE,
+    FOREIGN KEY (episode_id) REFERENCES episodes(id) ON DELETE CASCADE
+  );
+
+  -- 事件表
+  CREATE TABLE IF NOT EXISTS events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    description TEXT,
+    event_type TEXT DEFAULT 'signal' CHECK(event_type IN ('signal', 'noise')),
+    episode_id INTEGER,
+    universe_id INTEGER NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (episode_id) REFERENCES episodes(id) ON DELETE SET NULL,
+    FOREIGN KEY (universe_id) REFERENCES universes(id) ON DELETE CASCADE
+  );
+
+  -- 事件角色关联表
+  CREATE TABLE IF NOT EXISTS event_characters (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    event_id INTEGER NOT NULL,
+    character_id INTEGER NOT NULL,
+    impact_description TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+    FOREIGN KEY (character_id) REFERENCES characters(id) ON DELETE CASCADE
+  );
+
+  -- AI 会话表
+  CREATE TABLE IF NOT EXISTS ai_sessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    universe_id INTEGER NOT NULL,
+    prompt TEXT,
+    model_used TEXT,
+    response TEXT,
+    selected_branch_id INTEGER,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (universe_id) REFERENCES universes(id) ON DELETE CASCADE
+  );
+
+  -- 变更历史表
+  CREATE TABLE IF NOT EXISTS history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    entity_type TEXT NOT NULL,
+    entity_id INTEGER NOT NULL,
+    action TEXT NOT NULL CHECK(action IN ('create', 'update', 'delete')),
+    before_state TEXT,
+    after_state TEXT,
+    trigger_type TEXT CHECK(trigger_type IN ('proposal', 'ai', 'manual')),
+    trigger_id INTEGER,
+    user_id INTEGER,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  );
+
+  -- 通知表
+  CREATE TABLE IF NOT EXISTS notifications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    message TEXT NOT NULL,
+    is_read INTEGER DEFAULT 0,
+    data TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   );
 `);
 

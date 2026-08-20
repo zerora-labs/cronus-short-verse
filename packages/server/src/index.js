@@ -26,6 +26,22 @@ app.use('/api/universes', universeRouter);
 const characterRouter = require('./routes/characters');
 app.use('/api/characters', characterRouter);
 
+// ========== 提案路由 ==========
+const proposalRouter = require('./routes/proposals');
+app.use('/api/proposals', proposalRouter);
+
+// ========== 故事弧路由 ==========
+const arcRouter = require('./routes/arcs');
+app.use('/api/arcs', arcRouter);
+
+// ========== 事件路由 ==========
+const eventRouter = require('./routes/events');
+app.use('/api/events', eventRouter);
+
+// ========== 变更历史路由 ==========
+const historyRouter = require('./routes/history');
+app.use('/api/history', historyRouter);
+
 // 启动服务器
 app.listen(PORT, () => {
   console.log(`🌌 CronusShortVerse server running on http://localhost:${PORT}`);
