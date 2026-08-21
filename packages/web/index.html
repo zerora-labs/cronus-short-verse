@@ -14,6 +14,9 @@
     .celestial-comet { color: #a78bfa; }
     .celestial-meteor { color: #f87171; }
     .celestial-black_hole { color: #1f2937; }
+    .tab-btn { transition: all 0.2s; }
+    .tab-btn.active { border-color: #a855f7; color: #a855f7; }
+    .tab-btn:not(.active) { border-color: transparent; color: #9ca3af; }
   </style>
 </head>
 <body class="bg-gray-950 text-gray-100 min-h-screen">
@@ -106,12 +109,12 @@
         <h2 class="text-2xl font-bold">所有宇宙</h2>
         <button onclick="requireAuth(() => showPage('create-universe'))" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm">+ 创建宇宙</button>
       </div>
-      <div id="universe-list" class="grid gap-4"></div>
+      <div id="universe-list" class="grid gap-4 md:grid-cols-2"></div>
     </div>
 
     <!-- 创建宇宙 -->
     <div id="page-create-universe" class="hidden fade-in max-w-2xl mx-auto">
-      <h2 class="text-2xl font-bold mb-6">创建新宇宙</h2>
+      <h2 class="text-2xl font-bold mb-6">创建宇宙</h2>
       <form id="create-universe-form" class="space-y-4">
         <input type="text" id="universe-name" placeholder="宇宙名称" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none">
         <textarea id="universe-desc" placeholder="宇宙描述" rows="3" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none"></textarea>
@@ -122,13 +125,24 @@
       </form>
     </div>
 
-    <!-- 宇宙详情 -->
+    <!-- ========== 宇宙详情（含 Tabs） ========== -->
     <div id="page-universe-detail" class="hidden fade-in">
-      <div id="universe-detail-content"></div>
-      <!-- Galaxy Engine 画布 -->
-      <div id="galaxy-container" class="hidden mt-6">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold">🌌 Galaxy Engine 星图</h3>
+      <!-- 头部信息 -->
+      <div id="universe-header"></div>
+
+      <!-- Tab 栏 -->
+      <div class="flex gap-1 border-b border-gray-800 mb-6 mt-6 overflow-x-auto">
+        <button onclick="switchUniverseTab('characters')" data-tab="characters" class="tab-btn active px-4 py-2 text-sm font-medium border-b-2 whitespace-nowrap">角色</button>
+        <button onclick="switchUniverseTab('relationships')" data-tab="relationships" class="tab-btn px-4 py-2 text-sm font-medium border-b-2 whitespace-nowrap">引力关系</button>
+        <button onclick="switchUniverseTab('arcs')" data-tab="arcs" class="tab-btn px-4 py-2 text-sm font-medium border-b-2 whitespace-nowrap">弧与剧集</button>
+        <button onclick="switchUniverseTab('events')" data-tab="events" class="tab-btn px-4 py-2 text-sm font-medium border-b-2 whitespace-nowrap">事件</button>
+        <button onclick="switchUniverseTab('history')" data-tab="history" class="tab-btn px-4 py-2 text-sm font-medium border-b-2 whitespace-nowrap">变更历史</button>
+      </div>
+
+      <!-- Galaxy 星图（始终显示在 tab 内容上方） -->
+      <div id="galaxy-container" class="mb-6 hidden">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-lg font-bold">🌌 Galaxy 星图</h3>
           <div class="flex gap-2 text-xs text-gray-500">
             <span>🖱️ 拖拽平移</span>
             <span>🔄 滚轮缩放</span>
@@ -138,9 +152,17 @@
         <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden" style="height: 500px;">
           <canvas id="galaxy-canvas" class="w-full h-full"></canvas>
         </div>
-        <!-- 节点详情面板 -->
         <div id="node-detail" class="hidden mt-4 bg-gray-900 border border-gray-800 rounded-lg p-4"></div>
       </div>
+
+      <!-- Tab 内容区域 -->
+      <div id="tab-characters" class="tab-content">
+        <div id="character-list"></div>
+      </div>
+      <div id="tab-relationships" class="tab-content hidden"></div>
+      <div id="tab-arcs" class="tab-content hidden"></div>
+      <div id="tab-events" class="tab-content hidden"></div>
+      <div id="tab-history" class="tab-content hidden"></div>
     </div>
 
     <!-- 创建角色 -->
@@ -156,6 +178,7 @@
           <option value="meteor">🌠 Meteor 流星（一次性事件）</option>
           <option value="black_hole">🕳️ Black Hole 黑洞（高风险点）</option>
         </select>
+        <input type="number" id="char-mass" placeholder="质量（叙事重要性）" value="1" min="1" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none">
         <textarea id="char-desc" placeholder="角色描述" rows="3" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none"></textarea>
         <textarea id="char-backstory" placeholder="背景故事" rows="3" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-purple-500 focus:outline-none"></textarea>
         <div class="flex gap-4">
