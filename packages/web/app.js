@@ -211,10 +211,10 @@ async function loadUniverseDetail(id) {
           <h2 class="text-2xl font-bold mt-2">${escapeHtml(u.name)}</h2>
           <p class="text-gray-400 text-sm mt-1">${escapeHtml(u.description || '')}</p>
         </div>
-        <div class="flex gap-2">
-          <button onclick="requireAuth(() => showPage('create-character', {universeId: ${id}}))" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm">+ 添加角色</button>
-          <button onclick="forkUniverse(${id}, '${escapeHtml(u.name)}')" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm">🔱 Fork</button>
-          <button onclick="exportChronicle(${id})" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm">📜 导出编年史</button>
+        <div class="flex gap-2 flex-wrap">
+          <button onclick="requireAuth(() => showPage('create-character', {universeId: ${id}}))" class="inline-flex items-center gap-1.5 px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm whitespace-nowrap">⭐ 添加角色</button>
+          <button onclick="forkUniverse(${id}, '${escapeHtml(u.name)}')" class="inline-flex items-center gap-1.5 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm whitespace-nowrap">🔱 复制宇宙</button>
+          <button onclick="exportChronicle(${id})" class="inline-flex items-center gap-1.5 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm whitespace-nowrap">📜 导出编年史</button>
         </div>
       </div>
     `;
@@ -363,7 +363,7 @@ async function loadRelationships() {
     container.innerHTML = `
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-lg font-bold">引力关系</h3>
-        <button onclick="requireAuth(() => showRelForm(${JSON.stringify(characters).replace(/"/g, '&quot;')}))" class="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-sm">+ 创建关系</button>
+        <button onclick="requireAuth(() => showRelForm(${JSON.stringify(characters).replace(/"/g, '&quot;')}))" class="inline-flex items-center gap-1 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 rounded text-sm whitespace-nowrap">＋ 创建关系</button>
       </div>
       <div id="rel-form-container"></div>
       <div id="rel-list" class="space-y-2">
@@ -471,7 +471,7 @@ async function loadArcs() {
     container.innerHTML = `
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-lg font-bold">故事弧</h3>
-        <button onclick="requireAuth(() => showArcForm())" class="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-sm">+ 创建弧</button>
+        <button onclick="requireAuth(() => showArcForm())" class="inline-flex items-center gap-1 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 rounded text-sm whitespace-nowrap">＋ 创建故事弧</button>
       </div>
       <div id="arc-form-container"></div>
       <div id="arc-list" class="space-y-4">
@@ -646,7 +646,7 @@ async function loadEvents() {
     container.innerHTML = `
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-lg font-bold">事件追踪</h3>
-        <button onclick="requireAuth(() => showEventForm())" class="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-sm">+ 创建事件</button>
+        <button onclick="requireAuth(() => showEventForm())" class="inline-flex items-center gap-1 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 rounded text-sm whitespace-nowrap">＋ 创建事件</button>
       </div>
       <div id="event-form-container"></div>
       <div class="flex gap-2 mb-4">
