@@ -1,48 +1,51 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const db = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
 
-// 中间件
-app.use(cors());
+// 安全中间件
+app.use(cors({ origin: CORS_ORIGIN }));
 app.use(express.json());
+
+// 生产环境安全头
+if (NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    next();
+  });
+}
 
 // 健康检查
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({ status: 'ok', env: NODE_ENV, timestamp: new Date().toISOString() });
 });
 
-// ========== 用户路由 ==========
-const authRouter = require('./routes/auth');
-app.use('/api/auth', authRouter);
+// ========== API 路由 ==========
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/universes', require('./routes/universes'));
+app.use('/api/characters', require('./routes/characters'));
+app.use('/api/proposals', require('./routes/proposals'));
+app.use('/api/arcs', require('./routes/arcs'));
+app.use('/api/events', require('./routes/events'));
+app.use('/api/history', require('./routes/history'));
 
-// ========== 宇宙路由 ==========
-const universeRouter = require('./routes/universes');
-app.use('/api/universes', universeRouter);
+// ========== 生产环境：serve 前端静态文件 ==========
+if (NODE_ENV === 'production') {
+  const webDir = path.join(__dirname, '..', '..', 'web');
+  app.use(express.static(webDir));
+  // SPA fallback
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(webDir, 'index.html'));
+  });
+}
 
-// ========== 角色路由 ==========
-const characterRouter = require('./routes/characters');
-app.use('/api/characters', characterRouter);
-
-// ========== 提案路由 ==========
-const proposalRouter = require('./routes/proposals');
-app.use('/api/proposals', proposalRouter);
-
-// ========== 故事弧路由 ==========
-const arcRouter = require('./routes/arcs');
-app.use('/api/arcs', arcRouter);
-
-// ========== 事件路由 ==========
-const eventRouter = require('./routes/events');
-app.use('/api/events', eventRouter);
-
-// ========== 变更历史路由 ==========
-const historyRouter = require('./routes/history');
-app.use('/api/history', historyRouter);
-
-// 启动服务器
-app.listen(PORT, () => {
-  console.log(`🌌 CronusShortVerse server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🌌 CronusShortVerse [${NODE_ENV}] running on http://0.0.0.0:${PORT}`);
 });
