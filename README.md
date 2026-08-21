@@ -101,7 +101,7 @@ We are building more than a document – we are building a **usable platform**. 
 
 ## Development Status
 
-> Last updated: 2026-08-20
+> Last updated: 2026-08-21
 
 ### Completed
 
@@ -111,18 +111,18 @@ We are building more than a document – we are building a **usable platform**. 
 | Universe CRUD + fork + export chronicle | ✅ | ✅ | Done |
 | Character CRUD (with celestial type) | ✅ | ✅ | Done |
 | Galaxy Engine (interactive Canvas star map) | ✅ | ✅ | Done |
+| Relationship management (gravitational ties) | ✅ | ✅ | Done |
+| Proposal + voting system | ✅ | ✅ | Done |
+| Arc & episode management | ✅ | ✅ | Done |
+| Event tracking (signal / noise) | ✅ | ✅ | Done |
+| Change history & rollback | ✅ | ✅ | Done |
+| Character detail page (full Character Book) | — | ✅ | Done |
+| Proposal center page | — | ✅ | Done |
 
 ### In Progress / Not Started
 
 | Module | Backend API | Frontend Page | Status |
 |--------|:-----------:|:-------------:|--------|
-| Relationship management (gravitational ties) | ❌ | ❌ | DB table exists, no routes |
-| Proposal + voting system | ❌ | ❌ | DB tables exist, no routes |
-| Arc & episode management | ❌ | ❌ | DB tables exist, no routes |
-| Event tracking (signal / noise) | ❌ | ❌ | DB table exists, no routes |
-| Change history & rollback | ❌ | ❌ | DB table exists, no routes |
-| Character detail page (full Character Book) | — | ❌ | — |
-| Proposal center page | — | ❌ | — |
 | AI story generation | ❌ | ❌ | Not started |
 
 ### Tech Stack
@@ -135,20 +135,11 @@ We are building more than a document – we are building a **usable platform**. 
 
 ## TODO
 
-### Phase 1 — MVP Completion (Q3 2026)
+### Phase 1 — MVP Completion (Q3 2026) ✅
 
-**Backend**
-- [ ] Relationship CRUD API (`/api/universes/:uid/relationships`)
-- [ ] Proposal CRUD + voting API (`/api/universes/:uid/proposals` + `/api/proposals/:id/vote`)
-- [ ] Arc & episode management API
-- [ ] Event management API (signal vs noise)
-- [ ] Change history API (`/api/history`)
-- [ ] Galaxy data API (verify `/api/universes/:uid/galaxy` integration)
-
-**Frontend**
-- [ ] Proposal center page (create proposal + voting panel)
-- [ ] Character detail page (Character Book: traits, relationships, evolution timeline)
-- [ ] Relationship management UI (create / edit gravitational ties)
+- [x] All backend APIs (auth, universes, characters, relationships, proposals, arcs, episodes, events, history)
+- [x] All frontend pages (universe detail with tabs: characters, relationships, arcs/episodes, events, history)
+- [x] Galaxy Engine with evolution markers
 
 ### Phase 2 — Core Feature Enhancement
 
