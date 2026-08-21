@@ -158,4 +158,47 @@ router.get('/:id/episodes', (req, res) => {
   }
 });
 
+
+// 更新剧集
+router.put('/:arcId/episodes/:episodeId', authMiddleware, (req, res) => {
+  try {
+    const episode = db.prepare('SELECT * FROM episodes WHERE id = ? AND arc_id = ?').get(req.params.episodeId, req.params.arcId);
+    if (!episode) {
+      return res.status(404).json({ error: '剧集不存在' });
+    }
+
+    const { title, description, sequence_number, duration_seconds } = req.body;
+
+    db.prepare(`
+      UPDATE episodes
+      SET title = COALESCE(?, title),
+          description = COALESCE(?, description),
+          sequence_number = COALESCE(?, sequence_number),
+          duration_seconds = COALESCE(?, duration_seconds),
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `).run(title, description, sequence_number, duration_seconds, req.params.episodeId);
+
+    const updated = db.prepare('SELECT * FROM episodes WHERE id = ?').get(req.params.episodeId);
+    res.json({ episode: updated });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 删除剧集
+router.delete('/:arcId/episodes/:episodeId', authMiddleware, (req, res) => {
+  try {
+    const episode = db.prepare('SELECT * FROM episodes WHERE id = ? AND arc_id = ?').get(req.params.episodeId, req.params.arcId);
+    if (!episode) {
+      return res.status(404).json({ error: '剧集不存在' });
+    }
+
+    db.prepare('DELETE FROM episodes WHERE id = ?').run(req.params.episodeId);
+    res.json({ message: '剧集已删除' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;

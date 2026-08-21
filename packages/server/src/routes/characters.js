@@ -246,4 +246,50 @@ router.get('/relationships/:universeId', (req, res) => {
   }
 });
 
+
+// 更新关系
+router.put('/relationships/:id', authMiddleware, (req, res) => {
+  try {
+    const relationship = db.prepare('SELECT * FROM relationships WHERE id = ?').get(req.params.id);
+    if (!relationship) {
+      return res.status(404).json({ error: '关系不存在' });
+    }
+
+    const { type, strength, description } = req.body;
+    const validTypes = ['attraction', 'repulsion', 'orbit', 'collision'];
+    if (type && !validTypes.includes(type)) {
+      return res.status(400).json({ error: '无效的关系类型' });
+    }
+
+    db.prepare(`
+      UPDATE relationships
+      SET type = COALESCE(?, type),
+          strength = COALESCE(?, strength),
+          description = COALESCE(?, description),
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `).run(type, strength, description, req.params.id);
+
+    const updated = db.prepare('SELECT * FROM relationships WHERE id = ?').get(req.params.id);
+    res.json({ relationship: updated });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 删除关系
+router.delete('/relationships/:id', authMiddleware, (req, res) => {
+  try {
+    const relationship = db.prepare('SELECT * FROM relationships WHERE id = ?').get(req.params.id);
+    if (!relationship) {
+      return res.status(404).json({ error: '关系不存在' });
+    }
+
+    db.prepare('DELETE FROM relationships WHERE id = ?').run(req.params.id);
+    res.json({ message: '关系已删除' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
