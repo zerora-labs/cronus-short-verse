@@ -42,3 +42,13 @@ __pycache__/
 
 # OpenClaude
 .openclaude/
+
+# Codex / Agent
+.mimocode/
+.agents/
+
+# PM2 logs
+logs/
+
+# Tmp scripts
+/tmp/
