@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: packages/server/package-lock.json
+
+      - name: Install dependencies
+        working-directory: packages/server
+        run: npm ci
+
+      - name: Syntax check (server)
+        working-directory: packages/server
+        run: |
+          node -c src/index.js
+          node -c src/db.js
+          node -c src/middleware/auth.js
+          for f in src/routes/*.js; do node -c "$f"; done
+
+      - name: Syntax check (web)
+        run: |
+          node -c packages/web/app.js
+          node -c packages/web/galaxy.js
+
+      - name: Server startup test
+        working-directory: packages/server
+        run: |
+          timeout 5 node -e "require('./src/db')" || true

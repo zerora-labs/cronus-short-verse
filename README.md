@@ -61,7 +61,7 @@ We model every narrative element as a celestial body. This makes complex relatio
 | **Meteor** | One‑time event / noise | A viral rumor, a sudden accident |
 | **Black Hole** | High‑risk point / unknown | A secret that could destroy everything |
 
-![Core Metaphor - Celestial Narrative Model](pic.jpg)
+![Galaxy Engine Star Map](pic.jpg)
 
 **Gravitational fields** represent external forces (market trends, social pressure, antagonist actions) that pull on characters’ orbits.
 
